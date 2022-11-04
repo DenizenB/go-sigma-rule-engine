@@ -220,7 +220,8 @@ func (s Selection) Match(msg Event) (bool, bool) {
 			// Ensure at least one element matches
 			k, ok := isSameKind(vt)
 			if !ok {
-				return false, false
+				s.incrementMismatchCount()
+				return false, true
 			}
 
 			switch k {
@@ -232,7 +233,8 @@ func (s Selection) Match(msg Event) (bool, bool) {
 				}
 				return false, true
 			default:
-				return false, false
+				s.incrementMismatchCount()
+				return false, true
 			}
 		default:
 			s.incrementMismatchCount()

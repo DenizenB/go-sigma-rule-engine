@@ -215,6 +215,25 @@ func (s Selection) Match(msg Event) (bool, bool) {
 			if !v.Pattern.StringMatch(strconv.Itoa(int(vt))) {
 				return false, true
 			}
+		case []interface{}:
+			// Handle list values (not part of Sigma spec)
+			// Ensure at least one element matches
+			k, ok := isSameKind(vt)
+			if !ok {
+				return false, false
+			}
+
+			switch k {
+			case reflect.String:
+				for elem := range vt {
+					if v.Pattern.StringMatch(elem.(string)) {
+						return true, true
+					}
+				}
+				return false, true
+			default:
+				return false, false
+			}
 		default:
 			s.incrementMismatchCount()
 			return false, true

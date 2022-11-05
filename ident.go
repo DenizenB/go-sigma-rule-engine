@@ -226,7 +226,7 @@ func (s Selection) Match(msg Event) (bool, bool) {
 
 			switch k {
 			case reflect.String:
-				for elem := range vt {
+				for _, elem := range vt {
 					if v.Pattern.StringMatch(elem.(string)) {
 						return true, true
 					}
